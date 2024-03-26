@@ -1,3 +1,6 @@
+import 'dart:js_interop_unsafe';
+import 'dart:js_util';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -67,10 +70,21 @@ class MyApp extends StatelessWidget {
                       itemCount: studentData.length,
                       itemBuilder: (BuildContext context, index) {
                         return Container(
-                          margin: EdgeInsets.only(top: 5),
+                          margin: EdgeInsets.only(top: 5, left: 10, right: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.white,
+                            border: Border.all(
+                              color: Colors.black,
+                              width: 1.0,
+                            ),
+                          ),
+                          height: 100,
                           child: ListTile(
-                            tileColor: Colors.blue,
-                            title: Text("HEllo"),
+                            title: Text("${studentData[index]}"),
+                            trailing: IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.delete, size: 22)),
                           ),
                         );
                       }),
