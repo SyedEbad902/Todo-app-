@@ -13,17 +13,16 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
+  List studentData = [
+    "Ebad",
+    "Osama",
+    "Ali",
+    'AJmal',
+    "Amar",
+    "Akbar",
+    "Anthony"
+  ];
   Widget build(BuildContext context) {
-    List studentData = [
-      "Ebad",
-      "Osama",
-      "Ali",
-      'AJmal',
-      "Amar",
-      "Akbar",
-      "Anthony"
-    ];
-
     return MaterialApp(
       home: SafeArea(
         child: Scaffold(
@@ -91,17 +90,37 @@ class _MyAppState extends State<MyApp> {
                             width: 1.0,
                           ),
                         ),
-                        height: 100,
+                        height: 80,
                         child: ListTile(
                           title: Text("${studentData[index]}"),
-                          trailing: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                studentData.removeAt(index);
-                                print(studentData);
-                              });
-                            },
-                            icon: Icon(Icons.delete),
+                          trailing: Container(
+                            padding: EdgeInsets.only(left: 4),
+                            width: 100,
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.update,
+                                    size: 25,
+                                  ),
+                                  onPressed: () {
+                                    print(
+                                        'Favorite button pressed for item $index');
+                                  },
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () {
+                                    setState(() {
+                                      studentData.removeAt(index);
+                                    });
+                                    // Handle delete button press
+                                    print(
+                                        'Delete button pressed for item $index');
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                           // trailing: FittedBox(
                           //   fit: BoxFit.fill,
@@ -118,18 +137,18 @@ class _MyAppState extends State<MyApp> {
                           //             },
                           //             icon: const Icon(Icons.delete)),
                           //       ),
-                          //       // Container(
-                          //       //   height: 4,
-                          //       //   padding: const EdgeInsets.only(top: 2),
-                          //       //   child: IconButton(
-                          //       //       onPressed: () {
-                          //       //         setState(() {
-                          //       //           studentData.removeAt(index);
-                          //       //           print(studentData);
-                          //       //         });
-                          //       //       },
-                          //       //       icon: const Icon(Icons.update)),
-                          //       // ),
+                          //       Container(
+                          //         height: 4,
+                          //         padding: const EdgeInsets.only(top: 2),
+                          //         child: IconButton(
+                          //             onPressed: () {
+                          //               setState(() {
+                          //                 studentData.removeAt(index);
+                          //                 print(studentData);
+                          //               });
+                          //             },
+                          //             icon: const Icon(Icons.delete)),
+                          //       ),
                           //     ],
                           //   ),
                           // ),
@@ -137,21 +156,17 @@ class _MyAppState extends State<MyApp> {
                       );
                     }),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [],
-              ),
             ],
           ),
-          floatingActionButton: SizedBox(
-            width: 60.0, // Specify the width
-            height: 60.0, // Specify the height
-            child: FloatingActionButton.small(
-              backgroundColor: Colors.black,
-              onPressed: () {},
-              child: const Icon(Icons.add, color: Colors.white, size: 25),
-            ),
-          ),
+          // floatingActionButton: SizedBox(
+          //   width: 60.0, // Specify the width
+          //   height: 60.0, // Specify the height
+          //   child: FloatingActionButton.small(
+          //     backgroundColor: Colors.black,
+          //     onPressed: () {},
+          //     child: const Icon(Icons.add, color: Colors.white, size: 25),
+          //   ),
+          // ),
         ),
       ),
     );
