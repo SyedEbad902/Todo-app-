@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MaterialApp(home: const MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -13,6 +13,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
+  // ignore: override_on_non_overriding_member
   List studentData = [
     "Ebad",
     "Osama",
@@ -22,8 +23,12 @@ class _MyAppState extends State<MyApp> {
     "Akbar",
     "Anthony"
   ];
+  TextEditingController addItemcontroller = TextEditingController();
+  TextEditingController updateItemcontroller = TextEditingController();
+  // ignore: annotate_overrides
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: SafeArea(
         child: Scaffold(
           appBar: AppBar(
@@ -55,6 +60,7 @@ class _MyAppState extends State<MyApp> {
                 padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
                 height: 60,
                 child: TextField(
+                  controller: addItemcontroller,
                   decoration: InputDecoration(
                       hintText: "Enter some text",
                       hintStyle: const TextStyle(fontSize: 15),
@@ -94,79 +100,91 @@ class _MyAppState extends State<MyApp> {
                         child: ListTile(
                           title: Text("${studentData[index]}"),
                           trailing: Container(
-                            padding: EdgeInsets.only(left: 4),
+                            padding: const EdgeInsets.only(left: 4),
                             width: 100,
                             child: Row(
                               children: [
                                 IconButton(
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.update,
                                     size: 25,
                                   ),
                                   onPressed: () {
-                                    print(
-                                        'Favorite button pressed for item $index');
+                                    showDialog<String>(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          AlertDialog(
+                                        title: const Text('Update'),
+                                        content: SizedBox(
+                                          height: 45,
+                                          child: TextField(
+                                            controller: updateItemcontroller,
+                                            decoration: InputDecoration(
+                                                hintText:
+                                                    "Enter text to update",
+                                                hintStyle: const TextStyle(
+                                                    fontSize: 13),
+                                                border: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50))),
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(
+                                                context, 'Cancel'),
+                                            child: const Text('Cancel'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                studentData[index] =
+                                                    updateItemcontroller.text;
+                                                updateItemcontroller.clear();
+                                              });
+
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
                                   },
                                 ),
                                 IconButton(
-                                  icon: Icon(Icons.delete),
+                                  icon: const Icon(Icons.delete),
                                   onPressed: () {
                                     setState(() {
                                       studentData.removeAt(index);
                                     });
                                     // Handle delete button press
-                                    print(
-                                        'Delete button pressed for item $index');
                                   },
                                 ),
                               ],
                             ),
                           ),
-                          // trailing: FittedBox(
-                          //   fit: BoxFit.fill,
-                          //   child: Column(
-                          //     children: [
-                          //       Container(
-                          //         padding: const EdgeInsets.only(top: 5),
-                          //         child: IconButton(
-                          //             onPressed: () {
-                          //               setState(() {
-                          //                 studentData.removeAt(index);
-                          //                 print(studentData);
-                          //               });
-                          //             },
-                          //             icon: const Icon(Icons.delete)),
-                          //       ),
-                          //       Container(
-                          //         height: 4,
-                          //         padding: const EdgeInsets.only(top: 2),
-                          //         child: IconButton(
-                          //             onPressed: () {
-                          //               setState(() {
-                          //                 studentData.removeAt(index);
-                          //                 print(studentData);
-                          //               });
-                          //             },
-                          //             icon: const Icon(Icons.delete)),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
                         ),
                       );
                     }),
               ),
             ],
           ),
-          // floatingActionButton: SizedBox(
-          //   width: 60.0, // Specify the width
-          //   height: 60.0, // Specify the height
-          //   child: FloatingActionButton.small(
-          //     backgroundColor: Colors.black,
-          //     onPressed: () {},
-          //     child: const Icon(Icons.add, color: Colors.white, size: 25),
-          //   ),
-          // ),
+          floatingActionButton: SizedBox(
+            width: 50.0, // Specify the width
+            height: 50.0, // Specify the height
+            child: FloatingActionButton.small(
+              backgroundColor: Colors.black,
+              onPressed: () {
+                setState(() {
+                  studentData.add(addItemcontroller.text);
+                  addItemcontroller.clear();
+                });
+              },
+              child: const Icon(Icons.add, color: Colors.white, size: 25),
+            ),
+          ),
         ),
       ),
     );
